@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}INK FEVER | Elite Tattoo Artistry{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #bc9c22;
+            --black: #080808;
+            --text-gray: #888;
+        }
+
+        /* Noise Texture Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        body {
+            background-color: var(--black);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .brand {
+            font-family: 'Cinzel', serif;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        /* --- Updated Navbar Styles --- */
+        .navbar {
+            background: rgba(8, 8, 8, 0.7) !important;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 1.5rem 0;
+        }
+
+        .navbar.scrolled {
+            padding: 0.8rem 0 !important;
+            background: rgba(8, 8, 8, 0.95) !important;
+        }
+
+        .cool-link {
+            position: relative;
+            text-transform: uppercase;
+            font-size: 0.7rem !important;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.6) !important;
+            transition: all 0.3s ease;
+            font-weight: 400;
+        }
+
+        .cool-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--gold);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .cool-link:hover::after { width: 40%; }
+        .cool-link:hover { color: #fff !important; letter-spacing: 4px; }
+
+        .login-pill, .logout-pill {
+            display: inline-block;
+            padding: 10px 24px;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.4s ease;
+        }
+
+        .login-pill { border: 1px solid var(--gold); color: var(--gold); }
+        .login-pill:hover { background: var(--gold); color: #000; box-shadow: 0 10px 20px rgba(188, 156, 34, 0.2); }
+
+        .logout-pill { border: 1px solid rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.5); }
+        .logout-pill:hover { border-color: #fff; color: #fff; background: rgba(255,255,255,0.05); }
+
+        .navbar-toggler:focus { box-shadow: none; }
+
+        /* Footer */
+        footer {
+            padding: 80px 0 40px;
+            background: #050505;
+            border-top: 1px solid #111;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top py-lg-4 py-3">
+        <div class="container">
+            <a class="navbar-brand brand text-white" href="{% url 'home' %}" style="letter-spacing: 4px; font-weight: 700;">
+                INK<span style="color: var(--gold); margin-left: 8px;">FEVER</span>
+            </a>
+
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto text-center py-3 py-lg-0">
+                    <li class="nav-item"><a class="nav-link cool-link px-3" href="{% url 'home' %}#about">Studio</a></li>
+                    <li class="nav-item"><a class="nav-link cool-link px-3" href="{% url 'gallery' %}">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link cool-link px-3" href="{% url 'artists' %}">Artists</a></li>
+                    <li class="nav-item"><a class="nav-link cool-link px-3" href="{% url 'book' %}">Booking</a></li>
+                    <li class="nav-item"><a class="nav-link cool-link px-3" href="{% url 'review' %}">Reviews</a></li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link cool-link px-3" href="{% url 'my_bookings' %}">My Ink</a></li>
+                    {% endif %}
+                </ul>
+
+                <div class="d-flex flex-column flex-lg-row align-items-center justify-content-center gap-3">
+                    {% if user.is_authenticated %}
+                        <div class="me-lg-3 text-center text-lg-end d-none d-lg-block">
+                            <span style="color: var(--gold); font-size: 0.6rem; letter-spacing: 2px; opacity: 0.8; display: block;">CLIENT ID</span>
+                            <div class="text-white fw-bold small">{{ user.username|upper }}</div>
+                        </div>
+                        <a class="logout-pill" href="{% url 'logout' %}">LOGOUT</a>
+                    {% else %}
+                        <a class="login-pill" href="{% url 'login' %}">CLIENT LOGIN</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main style="min-height: 80vh; padding-top: 80px;">
+        {% block content %}{% endblock %}
+    </main>
+
+   <footer>
+    <div class="container text-center">
+        
+        <div class="brand mb-4" style="font-size: 1.5rem;">
+            INK FEVER
+        </div>
+
+        <!-- 🔥 UPDATED LOCATION -->
+        <p class="text-gray small mb-5">
+            EST. 2026 — MUMBAI, INDIA — BANDRA • ANDHERI • COLABA
+        </p>
+
+        <!-- 🔥 SOCIAL LINKS -->
+        <div class="d-flex justify-content-center gap-4 mb-5">
+            <a href="#" class="nav-link m-0 small text-uppercase" style="letter-spacing: 2px;">
+                Instagram
+            </a>
+            <a href="#" class="nav-link m-0 small text-uppercase" style="letter-spacing: 2px;">
+                WhatsApp
+            </a>
+            <a href="#" class="nav-link m-0 small text-uppercase" style="letter-spacing: 2px;">
+                Contact
+            </a>
+        </div>
+
+        <!-- 🔥 COPYRIGHT -->
+        <div style="font-size: 10px; opacity: 0.4; letter-spacing: 2px;">
+            © 2026 INK FEVER STUDIO — MUMBAI, INDIA
+        </div>
+
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+{% extends "studio/base.html" %}
+
+{% block title %}Initiate Session | Ink Fever{% endblock %}
+
+{% block content %}
+<style>
+    /* Use the global gold color from base.html */
+    :root {
+        --gold: #bc9c22;
+        --dark-card: #0f0f0f;
+    }
+
+    .booking-container {
+        max-width: 800px;
+        margin: 80px auto;
+        animation: fadeIn 0.8s ease-in-out;
+        padding: 0 20px;
+    }
+
+    .section-label {
+        font-family: 'Cinzel', serif;
+        color: var(--gold);
+        letter-spacing: 4px;
+        font-size: 0.7rem;
+        margin-bottom: 30px;
+        display: block;
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    /* Artist Selection Cards */
+    .artist-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 25px;
+        margin-bottom: 60px;
+    }
+
+    .artist-selector {
+        position: relative;
+        cursor: pointer;
+    }
+
+    .artist-selector input {
+        position: absolute;
+        opacity: 0;
+    }
+
+    .artist-card-ui {
+        border: 1px solid #1a1a1a;
+        padding: 25px 15px;
+        text-align: center;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        background: var(--dark-card);
+    }
+
+    .artist-card-ui img {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 15px;
+        filter: grayscale(100%);
+        transition: all 0.4s ease;
+        border: 1px solid transparent;
+    }
+
+    .artist-selector:hover .artist-card-ui {
+        border-color: #333;
+        transform: translateY(-5px);
+    }
+
+    .artist-selector input:checked + .artist-card-ui {
+        border-color: var(--gold);
+        background: rgba(188, 156, 34, 0.03);
+    }
+
+    .artist-selector input:checked + .artist-card-ui img {
+        filter: grayscale(0%);
+        border-color: var(--gold);
+        box-shadow: 0 0 15px rgba(188, 156, 34, 0.2);
+    }
+
+    .artist-name-label {
+        display: block;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #666;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .artist-selector input:checked + .artist-card-ui .artist-name-label {
+        color: #fff;
+        font-weight: 600;
+    }
+
+    /* Date Picker Styling */
+    .date-input-wrapper {
+        max-width: 400px;
+        margin: 0 auto 60px;
+    }
+
+    input[type="date"] {
+        background: transparent !important;
+        border: 1px solid #1a1a1a !important;
+        color: #fff !important;
+        padding: 15px;
+        border-radius: 0;
+        text-align: center;
+        font-family: 'Inter', sans-serif;
+        letter-spacing: 2px;
+        transition: border-color 0.3s ease;
+    }
+
+    input[type="date"]:focus {
+        border-color: var(--gold) !important;
+        box-shadow: none;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+        opacity: 0.5;
+        cursor: pointer;
+    }
+
+    /* --- THE YELLOW (GOLD) BUTTON --- */
+    .btn-check-slots {
+        background: var(--gold) !important;
+        color: #000 !important;
+        border: none;
+        padding: 18px 45px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        font-size: 0.8rem;
+        border-radius: 0;
+        transition: all 0.4s ease;
+        display: inline-block;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .btn-check-slots:hover {
+        background: #fff !important;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(188, 156, 34, 0.3);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="booking-container">
+    <div class="text-center mb-5">
+        <span class="label" style="color: var(--gold); letter-spacing: 5px; font-size: 0.6rem; text-transform: uppercase;">Appointments</span>
+        <h2 class="mt-2" style="font-family: 'Cinzel'; letter-spacing: 4px; font-weight: 700;">RESERVE YOUR <span style="color: var(--gold);">INK</span></h2>
+        <p class="text-muted small mt-3" style="letter-spacing: 1px;">Select an artist and browse available windows.</p>
+    </div>
+
+    <form method="GET" action="{% url 'slots' %}">
+        
+        <span class="section-label">01 / Choose Artist</span>
+        <div class="artist-grid">
+            {% for artist in artists %}
+            <label class="artist-selector">
+                <input type="radio" name="artist" value="{{ artist.id }}" required>
+                <div class="artist-card-ui">
+                    {% if artist.image %}
+                        <img src="{{ artist.image.url }}" alt="{{ artist.name }}">
+                    {% endif %}
+                    <span class="artist-name-label">{{ artist.name }}</span>
+                </div>
+            </label>
+            {% endfor %}
+        </div>
+
+        <span class="section-label">02 / Preferred Date</span>
+        <div class="date-input-wrapper">
+            <input type="date" name="date" class="form-control" required id="id_date">
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-check-slots">
+                Check Availability
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Set minimum date to today
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateInput = document.getElementById('id_date');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+    });
+</script>
+
+{% endblock %}

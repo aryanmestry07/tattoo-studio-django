@@ -1,0 +1,138 @@
+{% extends "studio/base.html" %}
+
+{% block title %}Session Confirmed | Ink Fever{% endblock %}
+
+{% block content %}
+<style>
+    :root {
+        --gold: #bc9c22;
+        --dark-bg: #080808;
+    }
+
+    .success-wrapper {
+        height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        animation: fadeIn 1s ease-out;
+    }
+
+    .success-card {
+        padding: 60px;
+        border: 1px solid #1a1a1a;
+        background: #0f0f0f;
+        max-width: 600px;
+        width: 100%;
+        position: relative;
+    }
+
+    /* Architectural corner accents */
+    .success-card::before, .success-card::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border: 1px solid var(--gold);
+    }
+    .success-card::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+    .success-card::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+    .check-icon {
+        font-size: 3rem;
+        color: var(--gold);
+        margin-bottom: 30px;
+        display: block;
+        animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s both;
+    }
+
+    .confirmation-title {
+        font-family: 'Cinzel', serif;
+        font-size: 2rem;
+        letter-spacing: 5px;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        color: #fff;
+    }
+
+    .confirmation-text {
+        color: #fff; /* High visibility white */
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+        line-height: 1.8;
+        margin-bottom: 40px;
+        opacity: 0.9;
+    }
+
+    .btn-gold {
+        background: var(--gold) !important;
+        color: #000 !important;
+        border-radius: 0;
+        padding: 15px 35px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        transition: all 0.3s ease;
+        border: none;
+        text-decoration: none;
+    }
+
+    .btn-gold:hover {
+        background: #fff !important;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(188, 156, 34, 0.2);
+    }
+
+    .btn-outline {
+        border: 1px solid #333;
+        color: #fff;
+        padding: 15px 35px;
+        font-size: 0.75rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline:hover {
+        border-color: #fff;
+        background: rgba(255,255,255,0.05);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scaleIn {
+        from { transform: scale(0); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+</style>
+
+<div class="container success-wrapper">
+    <div class="success-card">
+        <div class="check-icon">✦</div>
+        
+        <h2 class="confirmation-title">Session Secured</h2>
+        
+        <p class="confirmation-text">
+            Your appointment has been successfully integrated into our schedule. 
+            A master artist has been reserved for your vision. <br>
+            <span style="color: var(--gold);">Prepare for excellence.</span>
+        </p>
+
+        <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
+            <a href="{% url 'home' %}" class="btn-gold">Return to Studio</a>
+            <a href="{% url 'my_bookings' %}" class="btn-outline">View My Schedule</a>
+        </div>
+        
+        <div class="mt-5">
+            <a href="{% url 'gallery' %}" style="color: rgba(255,255,255,0.4); font-size: 0.65rem; letter-spacing: 3px; text-decoration: none; text-transform: uppercase;">
+                Browse the Archive →
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

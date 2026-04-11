@@ -1,0 +1,154 @@
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top py-lg-4 py-3">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}" style="font-family: 'Cinzel', serif; letter-spacing: 4px; font-weight: 700;">
+            INK<span style="color: #bc9c22; margin-left: 8px;">FEVER</span>
+        </a>
+
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto text-center py-3 py-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link cool-link px-3" href="{% url 'home' %}#about">Studio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link cool-link px-3" href="{% url 'gallery' %}">Gallery</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link cool-link px-3" href="{% url 'artists' %}">Artists</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link cool-link px-3" href="{% url 'book' %}">Booking</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link cool-link px-3" href="{% url 'review' %}">Reviews</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link cool-link px-3" href="{% url 'my_bookings' %}">My Ink</a>
+                </li>
+                {% endif %}
+            </ul>
+
+            <div class="d-flex flex-column flex-lg-row align-items-center justify-content-center gap-3">
+                {% if user.is_authenticated %}
+                    <div class="me-lg-3 text-center text-lg-end d-lg-block">
+                        <span class="text-gold d-block" style="font-size: 0.6rem; letter-spacing: 2px; opacity: 0.8;">CLIENT ID</span>
+                        <div class="text-white fw-bold small">{{ user.username|upper }}</div>
+                    </div>
+                    <a class="logout-pill" href="{% url 'logout' %}">LOGOUT</a>
+                {% else %}
+                    <a class="login-pill" href="{% url 'login' %}">CLIENT LOGIN</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<style>
+    /* --- Modern Glassmorphism --- */
+    .navbar {
+        background: rgba(8, 8, 8, 0.7) !important; /* Slightly more transparent */
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Shrink Navbar on Scroll - Optional JS required, but CSS handles initial look */
+    .navbar.scrolled {
+        padding-top: 0.8rem !important;
+        padding-bottom: 0.8rem !important;
+        background: rgba(8, 8, 8, 0.95) !important;
+    }
+
+    /* --- Animated Link Underline --- */
+    .cool-link {
+        position: relative;
+        text-transform: uppercase;
+        font-size: 0.7rem !important;
+        letter-spacing: 3px;
+        color: rgba(255, 255, 255, 0.6) !important;
+        transition: all 0.3s ease;
+        font-weight: 400;
+    }
+
+    .cool-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 1px;
+        bottom: 0;
+        left: 50%;
+        background-color: #bc9c22; /* Matching the gold in Home UI */
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+
+    .cool-link:hover::after {
+        width: 40%;
+    }
+
+    .cool-link:hover {
+        color: #fff !important;
+        letter-spacing: 4px; /* Slight expansion effect */
+    }
+
+    /* --- Pills Architecture --- */
+    .login-pill, .logout-pill {
+        display: inline-block;
+        padding: 10px 24px;
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        text-decoration: none;
+        font-weight: 700;
+        transition: all 0.4s ease;
+        border-radius: 0px; /* Sharp edges for elite look */
+    }
+
+    .login-pill {
+        border: 1px solid #bc9c22;
+        color: #bc9c22;
+    }
+
+    .login-pill:hover {
+        background: #bc9c22;
+        color: #000;
+        box-shadow: 0 10px 20px rgba(188, 156, 34, 0.2);
+    }
+
+    .logout-pill {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .logout-pill:hover {
+        border-color: #fff;
+        color: #fff;
+        background: rgba(255,255,255,0.05);
+    }
+
+    .text-gold {
+        color: #bc9c22;
+    }
+
+    /* --- Mobile Fixes --- */
+    @media (max-width: 991.98px) {
+        .navbar-collapse {
+            background: #080808;
+            margin-top: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .cool-link:hover::after {
+            width: 20%;
+        }
+    }
+
+    /* Remove Mobile Toggler Glow */
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
+</style>

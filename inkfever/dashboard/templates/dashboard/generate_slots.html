@@ -1,0 +1,86 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Generate Slots{% endblock %}
+
+{% block header_title %}SLOT GENERATOR{% endblock %}
+
+{% block admin_content %}
+
+<style>
+    .form-control {
+        background: #111;
+        border: 1px solid #333;
+        color: #fff !important;
+    }
+
+    .form-control:focus {
+        background: #111;
+        color: #fff;
+        border-color: var(--accent-gold);
+        box-shadow: none;
+    }
+
+    /* 🔥 Label visibility fix */
+    .text-silver {
+        color: #ccc !important;
+    }
+
+    /* 🔥 Alert styling */
+    .alert {
+        background: #111;
+        border: 1px solid var(--accent-gold);
+        color: #fff;
+        border-radius: 0;
+    }
+</style>
+
+<div class="activity-panel p-4 shadow-lg">
+
+    <h4 class="text-gold mb-4" style="font-family: 'Cinzel';">
+        Generate Time Slots
+    </h4>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="row g-3">
+
+            <!-- ARTIST -->
+            <div class="col-md-6">
+                <label class="text-silver small mb-1">Select Artist</label>
+                <select name="artist" class="form-control" required>
+                    <option value="">Choose Artist</option>
+                    {% for artist in artists %}
+                        <option value="{{ artist.id }}">{{ artist.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- DATE -->
+            <div class="col-md-6">
+                <label class="text-silver small mb-1">Select Date</label>
+                <input type="date" name="date" class="form-control" required>
+            </div>
+
+            <!-- BUTTON -->
+            <div class="col-12 mt-3">
+                <button type="submit" class="btn btn-outline-warning px-4" style="border-radius:0;">
+                    Generate Slots
+                </button>
+            </div>
+
+        </div>
+    </form>
+
+    <!-- 🔥 DJANGO MESSAGES (FIXED) -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert mt-4">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+</div>
+
+{% endblock %}

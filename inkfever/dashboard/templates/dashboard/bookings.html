@@ -1,0 +1,133 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Manage Bookings{% endblock %}
+
+{% block header_title %}BOOKING MANAGEMENT{% endblock %}
+
+{% block admin_content %}
+
+<style>
+    .table thead th {
+        color: var(--accent-gold);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        border-bottom: 2px solid var(--accent-gold);
+    }
+
+    .table td, 
+    .table th {
+        color: #ffffff !important;
+    }
+
+    .text-muted {
+        color: #cccccc !important;
+    }
+
+    .badge {
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #1a1a1a;
+    }
+</style>
+
+<h4 class="text-gold mb-4" style="font-family: 'Cinzel';">
+    Booking Requests
+</h4>
+
+<div class="table-responsive">
+    <table class="table table-dark table-hover align-middle">
+
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Artist</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+
+                <td>{{ forloop.counter }}</td>
+                <td>{{ booking.user.username }}</td>
+                <td>{{ booking.artist.name }}</td>
+                <td>{{ booking.slot.date }}</td>
+
+                <td>
+                    {{ booking.slot.start_time }} - {{ booking.slot.end_time }}
+                </td>
+
+                <td>
+                    {% if booking.status == "confirmed" %}
+                        <span class="badge bg-success">Confirmed</span>
+
+                    {% elif booking.status == "pending" %}
+                        <span class="badge bg-warning text-dark">Pending</span>
+
+                    {% elif booking.status == "rejected" %}
+                        <span class="badge bg-danger">Rejected</span>
+
+                    {% elif booking.status == "completed" %}
+                        <span class="badge bg-primary">Completed</span>
+
+                    {% else %}
+                        <span class="badge bg-secondary">{{ booking.status }}</span>
+                    {% endif %}
+                </td>
+
+                <td class="text-end">
+
+                    {% if booking.status == "pending" %}
+                        <!-- ✅ CONFIRM -->
+                        <a href="{% url 'update_booking_status' booking.id 'confirmed' %}"
+                           class="btn btn-sm btn-outline-success me-1">
+                            Confirm
+                        </a>
+
+                        <!-- ❌ REJECT -->
+                        <a href="{% url 'update_booking_status' booking.id 'rejected' %}"
+                           class="btn btn-sm btn-outline-danger">
+                            Reject
+                        </a>
+
+                    {% elif booking.status == "confirmed" %}
+                        <!-- 🎯 COMPLETE -->
+                        <a href="{% url 'update_booking_status' booking.id 'completed' %}"
+                           class="btn btn-sm btn-outline-primary me-1">
+                            Complete
+                        </a>
+
+                        <!-- ❌ REJECT -->
+                        <a href="{% url 'update_booking_status' booking.id 'rejected' %}"
+                           class="btn btn-sm btn-outline-danger">
+                            Reject
+                        </a>
+
+                    {% else %}
+                        <span class="text-muted">No Actions</span>
+                    {% endif %}
+
+                </td>
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center text-muted">
+                    No bookings found
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+
+{% endblock %}

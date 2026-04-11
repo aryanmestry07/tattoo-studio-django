@@ -1,0 +1,236 @@
+{% extends "studio/base.html" %}
+
+{% block content %}
+<style>
+    :root {
+        --gold: #bc9c22;
+        --border: #1a1a1a;
+    }
+
+    .review-container {
+        max-width: 1200px;
+        margin: 80px auto;
+        padding: 0 20px;
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    /* --- FORM SECTION --- */
+    .review-form-card {
+        background: #0f0f0f;
+        border: 1px solid var(--border);
+        padding: 40px;
+        position: sticky;
+        top: 100px;
+    }
+
+    .form-label-white {
+        color: #fff !important;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .form-control, .form-select {
+        background: transparent !important;
+        border: 1px solid var(--border) !important;
+        color: #fff !important;
+        border-radius: 0;
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+
+    .form-control:focus {
+        border-color: var(--gold) !important;
+        box-shadow: none;
+    }
+
+    /* --- STAR RATING INTERACTION --- */
+    .rating-wrapper {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+    }
+
+    .rating-wrapper input { display: none; }
+
+    .rating-wrapper label {
+        cursor: pointer;
+        font-size: 2rem;
+        color: #222;
+        transition: color 0.3s ease;
+        padding: 0 2px;
+    }
+
+    /* Hover and Checked Logic */
+    .rating-wrapper label:hover,
+    .rating-wrapper label:hover ~ label,
+    .rating-wrapper input:checked ~ label {
+        color: var(--gold);
+    }
+
+    /* --- REVIEWS GRID --- */
+    .review-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 30px;
+    }
+
+    .testimonial-card {
+        background: #0a0a0a;
+        border: 1px solid var(--border);
+        padding: 35px;
+        position: relative;
+        transition: all 0.4s ease;
+    }
+
+    .testimonial-card:hover {
+        border-color: var(--gold);
+        transform: translateY(-5px);
+    }
+
+    .testimonial-card::before {
+        content: "“";
+        position: absolute;
+        top: 10px;
+        right: 25px;
+        font-size: 5rem;
+        color: rgba(188, 156, 34, 0.05);
+        font-family: 'Cinzel', serif;
+    }
+
+    .review-text {
+        color: #fff; /* High visibility white */
+        font-size: 0.95rem;
+        line-height: 1.8;
+        font-weight: 300;
+        margin-bottom: 20px;
+    }
+
+    .client-name {
+        font-family: 'Cinzel', serif;
+        font-size: 0.75rem;
+        color: var(--gold);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .star-display {
+        color: var(--gold);
+        font-size: 0.8rem;
+        letter-spacing: 3px;
+        margin-bottom: 15px;
+    }
+
+    /* --- THE YELLOW (GOLD) BUTTON --- */
+    .btn-post {
+        background: var(--gold) !important;
+        color: #000 !important;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        border-radius: 0;
+        padding: 15px;
+        font-size: 0.8rem;
+        border: none;
+        transition: 0.4s;
+    }
+
+    .btn-post:hover {
+        background: #fff !important;
+        box-shadow: 0 10px 20px rgba(188, 156, 34, 0.2);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="review-container">
+    <div class="row g-5">
+
+        <div class="col-lg-4">
+            <div class="review-form-card">
+                <span style="color: var(--gold); font-size: 0.6rem; letter-spacing: 4px; text-transform: uppercase;">Feedback</span>
+                <h3 class="brand h4 mb-4 mt-2">Leave Your Mark</h3>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-4">
+                        <label class="form-label-white">Select Master Artist</label>
+                        <select name="artist" class="form-select">
+                            {% for artist in artists %}
+                                <option value="{{ artist.id }}">{{ artist.name|upper }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label-white">Artist Rating</label>
+                        <div class="rating-wrapper">
+                            <input type="radio" name="rating" value="5" id="star5" required><label for="star5">★</label>
+                            <input type="radio" name="rating" value="4" id="star4"><label for="star4">★</label>
+                            <input type="radio" name="rating" value="3" id="star3"><label for="star3">★</label>
+                            <input type="radio" name="rating" value="2" id="star2"><label for="star2">★</label>
+                            <input type="radio" name="rating" value="1" id="star1"><label for="star1">★</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label-white">Your Testimony</label>
+                        <textarea name="comment" class="form-control" rows="5" placeholder="Details of your session..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-post w-100">
+                        Archive Review
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="mb-5">
+                <span style="color: var(--gold); font-size: 0.6rem; letter-spacing: 4px; text-transform: uppercase;">Portfolios</span>
+                <h2 class="brand h2 mt-2">Studio Voices</h2>
+            </div>
+
+            <div class="review-grid">
+                <div class="testimonial-card">
+                    <div class="star-display">★★★★★</div>
+                    <p class="review-text">
+                        The clinical precision in the realism work is unmatched. A true sanctuary for permanent art.
+                    </p>
+                    <div class="client-name">— Jonathan Reed</div>
+                </div>
+
+                {% for review in reviews %}
+                <div class="testimonial-card">
+                    <div class="star-display">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= review.rating %}
+                                ★
+                            {% else %}
+                                <span style="color: #222;">★</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <p class="review-text">
+                        "{{ review.comment }}"
+                    </p>
+
+                    <div class="client-name">
+                        — {{ review.user.username }}
+                        <span style="font-size: 0.6rem; color: #444; margin-left: 10px;">/ {{ review.artist.name|upper }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

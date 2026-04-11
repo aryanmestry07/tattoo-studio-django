@@ -1,0 +1,206 @@
+{% extends "studio/base.html" %}
+
+{% block content %}
+<style>
+    /* --- Design System --- */
+    :root {
+        --gold: #bc9c22;
+        --dark-bg: #080808;
+        --border-color: #1a1a1a;
+        --text-dim: #666;
+    }
+
+    /* --- Hero: Typography Focus --- */
+    .hero-container {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-bottom: 1px solid var(--border-color);
+        padding-left: 5%;
+    }
+
+    .hero-title {
+        font-size: clamp(4rem, 18vw, 12rem);
+        line-height: 0.85;
+        font-weight: 700;
+        margin: 0;
+        color: #fff;
+        text-transform: uppercase;
+    }
+
+    .hero-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        padding-right: 5%;
+        margin-top: 2rem;
+    }
+
+    /* --- Content Grid --- */
+    .content-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .grid-cell {
+        padding: 80px 5%;
+        border-right: 1px solid var(--border-color);
+    }
+
+    .grid-cell:last-child {
+        border-right: none;
+    }
+
+    .label {
+        font-size: 0.65rem;
+        letter-spacing: 4px;
+        color: var(--gold);
+        text-transform: uppercase;
+        margin-bottom: 2rem;
+        display: block;
+    }
+
+    /* --- Large List Stats --- */
+    .stat-row {
+        margin-bottom: 4rem;
+    }
+
+    .stat-number {
+        font-family: 'Cinzel', serif;
+        font-size: 3rem;
+        color: var(--gold);
+        display: block;
+        line-height: 1;
+    }
+
+    .stat-text {
+        font-size: 0.9rem;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    /* --- Service Block --- */
+    .service-block {
+        padding: 40px 0;
+        border-bottom: 1px solid #1a1a1a;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .service-block h3 {
+        font-size: 1.25rem;
+        margin: 0;
+        letter-spacing: 2px;
+    }
+
+    /* --- Interactive CTA --- */
+    .cta-strip {
+        height: 40vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        transition: background 0.5s ease;
+    }
+
+    .cta-strip:hover {
+        background: #111;
+    }
+
+    .cta-link {
+        font-family: 'Cinzel', serif;
+        font-size: clamp(2rem, 5vw, 4rem);
+        color: #fff;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .cta-link:hover {
+        color: var(--gold);
+    }
+
+    @media (max-width: 768px) {
+        .content-grid { grid-template-columns: 1fr; }
+        .grid-cell { border-right: none; border-bottom: 1px solid var(--border-color); }
+    }
+</style>
+
+<section id="home" class="hero-container">
+    <h1 class="hero-title">INK</h1>
+    <h1 class="hero-title" style="color: var(--gold); margin-left: 10%;">FEVER</h1>
+    
+    <div class="hero-meta">
+        <p class="text-dim mb-0" style="max-width: 300px; letter-spacing: 1px;">
+            A sanctuary for elite permanent artistry and clinical excellence.
+        </p>
+        <div class="d-flex gap-4">
+            <a href="{% url 'book' %}" class="btn-ink" style="padding: 15px 40px; text-decoration: none;">BOOKING</a>
+        </div>
+    </div>
+</section>
+
+<div class="content-grid">
+    <div class="grid-cell" id="about">
+        <span class="label">01 / The Studio</span>
+        <h2 class="display-6 brand mb-5">Where precision meets the soul.</h2>
+        
+        <div class="stat-row">
+            <span class="stat-number">100%</span>
+            <span class="stat-text">Single-Use Equipment</span>
+        </div>
+        
+        <div class="stat-row">
+            <span class="stat-number">Bespoke</span>
+            <span class="stat-text">Custom Design Architecture</span>
+        </div>
+
+        <div class="stat-row">
+            <span class="stat-number">Hospital</span>
+            <span class="stat-text">Grade Sterilization</span>
+        </div>
+    </div>
+
+    <div class="grid-cell">
+        <span class="label">02 / Artistry</span>
+        <p class="text-dim mb-5">We do not offer flash sheets. Every project begins with a conversation and ends with a masterpiece designed specifically for your anatomy.</p>
+
+        <div class="service-block">
+            <h3 class="brand">Realism</h3>
+            <span class="text-dim small">Depth & Detail</span>
+        </div>
+        <div class="service-block">
+            <h3 class="brand">Fine Line</h3>
+            <span class="text-dim small">Minimalist Elegance</span>
+        </div>
+        <div class="service-block">
+            <h3 class="brand">Neo-Traditional</h3>
+            <span class="text-dim small">Modern Classics</span>
+        </div>
+        <div class="service-block">
+            <h3 class="brand">Restorative</h3>
+            <span class="text-dim small">Cover-ups & Scarring</span>
+        </div>
+    </div>
+</div>
+
+<section class="cta-strip">
+    <div class="container">
+        <span class="label mb-3">Ready to proceed?</span><br>
+        <a href="{% url 'book' %}" class="cta-link">INITIATE CONSULTATION</a>
+    </div>
+</section>
+
+<div class="content-grid" style="border-top: 1px solid var(--border-color); border-bottom: none;">
+    <div class="grid-cell py-4 text-center">
+        <a href="{% url 'gallery' %}" class="nav-link" style="letter-spacing: 5px;">VIEW ARCHIVE</a>
+    </div>
+    <div class="grid-cell py-4 text-center">
+        <a href="#home" class="nav-link" style="letter-spacing: 5px;">BACK TO TOP</a>
+    </div>
+</div>
+
+{% endblock %}

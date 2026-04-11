@@ -1,0 +1,128 @@
+<div class="sidebar">
+
+    <!-- BRAND -->
+    <a href="{% url 'dashboard_home' %}" class="sidebar-brand">
+        INK<span style="color: var(--accent-gold); margin-left: 5px;">FEVER</span>
+    </a>
+    
+    <!-- NAV -->
+    <nav class="flex-column">
+
+        <a href="{% url 'dashboard_home' %}" 
+           class="nav-link-admin {% if request.path == '/dashboard/' %}active{% endif %}">
+            <i class="bi bi-speedometer2"></i> 
+            <span>OVERVIEW</span>
+        </a>
+
+        <a href="{% url 'manage_artists' %}" 
+           class="nav-link-admin {% if 'artists' in request.path %}active{% endif %}">
+            <i class="bi bi-person-badge"></i> 
+            <span>ARTISTS</span>
+        </a>
+
+        <a href="{% url 'manage_tattoos' %}" 
+           class="nav-link-admin {% if 'tattoos' in request.path %}active{% endif %}">
+            <i class="bi bi-brush"></i> 
+            <span>TATTOO FEED</span>
+        </a>
+
+        <a href="{% url 'manage_bookings' %}" 
+           class="nav-link-admin {% if 'bookings' in request.path %}active{% endif %}">
+            <i class="bi bi-calendar-check"></i> 
+            <span>BOOKINGS</span>
+        </a>
+
+        <!-- 🔥 NEW: SLOT GENERATOR -->
+        <a href="{% url 'generate_slots' %}" 
+           class="nav-link-admin {% if 'generate-slots' in request.path %}active{% endif %}">
+            <i class="bi bi-clock-history"></i> 
+            <span>GENERATE SLOTS</span>
+        </a>
+
+    </nav>
+
+    <!-- LOGOUT -->
+    <a href="{% url 'admin_logout' %}" class="logout-btn">
+        <i class="bi bi-box-arrow-left me-2"></i> SECURE LOGOUT
+    </a>
+
+</div>
+
+<style>
+    .sidebar {
+        width: 260px;
+        height: 100vh;
+        background: #0a0a0a;
+        border-right: 1px solid #222;
+        position: fixed;
+        left: 0;
+        top: 0;
+        padding: 40px 0;
+        display: flex;
+        flex-direction: column;
+        z-index: 1000;
+    }
+
+    .sidebar-brand {
+        font-family: 'Cinzel', serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #ffffff;
+        text-decoration: none;
+        letter-spacing: 3px;
+        padding: 0 30px;
+        margin-bottom: 60px;
+        display: block;
+    }
+
+    .nav-link-admin {
+        color: #cccccc;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        padding: 15px 30px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        letter-spacing: 1.5px;
+        transition: all 0.3s ease;
+        border-left: 3px solid transparent;
+    }
+
+    .nav-link-admin i {
+        font-size: 1.2rem;
+        margin-right: 15px;
+        width: 25px;
+    }
+
+    .nav-link-admin:hover, 
+    .nav-link-admin.active {
+        background: rgba(212, 175, 55, 0.05);
+        color: var(--accent-gold) !important;
+        border-left: 3px solid var(--accent-gold);
+    }
+
+    .logout-btn {
+        margin-top: auto;
+        background: #ff3131;
+        color: #ffffff !important;
+        text-decoration: none;
+        padding: 15px 30px;
+        font-weight: 800;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+        text-align: center;
+        transition: background 0.2s;
+    }
+
+    .logout-btn:hover {
+        background: #d42a2a;
+        color: #ffffff;
+    }
+
+    @media (max-width: 992px) {
+        .sidebar { width: 80px; padding: 20px 0; }
+        .sidebar-brand, .nav-link-admin span, .logout-btn { display: none; }
+        .nav-link-admin { justify-content: center; padding: 20px 0; border: none; }
+        .nav-link-admin i { margin: 0; }
+    }
+</style>

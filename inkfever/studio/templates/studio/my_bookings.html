@@ -1,0 +1,76 @@
+{% extends "studio/base.html" %}
+
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2 class="mb-4">My Bookings 📅</h2>
+
+    {% if bookings %}
+
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Artist</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.artist.name }}</td>
+
+                        <td>{{ booking.slot.date }}</td>
+
+                        <td>
+                            {{ booking.slot.start_time }} - {{ booking.slot.end_time }}
+                        </td>
+
+                        <td>
+                            {% if booking.status == "confirmed" %}
+                                <span class="badge bg-success">Confirmed</span>
+
+                            {% elif booking.status == "pending" %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+
+                            {% elif booking.status == "rejected" %}
+                                <span class="badge bg-danger">Rejected</span>
+
+                            {% elif booking.status == "completed" %}
+                                <span class="badge bg-primary">Completed</span>
+
+                            {% elif booking.status == "cancelled" %}
+                                <span class="badge bg-secondary">Cancelled</span>
+
+                            {% else %}
+                                <span class="badge bg-light text-dark">{{ booking.status }}</span>
+                            {% endif %}
+                        </td>
+
+                        <td>{{ booking.description }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    {% else %}
+
+        <div class="alert alert-info text-center">
+            You have no bookings yet 😔
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

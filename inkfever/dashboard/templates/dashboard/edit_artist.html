@@ -1,0 +1,103 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Edit Artist{% endblock %}
+
+{% block header_title %}EDIT ARTIST{% endblock %}
+
+{% block admin_content %}
+
+<style>
+    .form-control {
+        background: #111;
+        border: 1px solid #333;
+        color: #fff;
+    }
+
+    .form-control:focus {
+        background: #111;
+        color: #fff;
+        border-color: var(--accent-gold);
+        box-shadow: none;
+    }
+
+    .artist-preview {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border: 1px solid var(--accent-gold);
+        margin-bottom: 10px;
+    }
+
+    .btn-outline-warning:hover {
+        background: var(--accent-gold);
+        color: #000;
+    }
+</style>
+
+<div class="activity-panel p-4 shadow-lg">
+
+    <h4 class="text-gold mb-4" style="font-family: 'Cinzel';">
+        Update Artist Details
+    </h4>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row g-3">
+
+            <!-- NAME -->
+            <div class="col-md-6">
+                <label class="text-silver small mb-1">Artist Name</label>
+                <input type="text" name="name"
+                       value="{{ artist.name }}"
+                       class="form-control"
+                       required>
+            </div>
+
+            <!-- SPECIALTY -->
+            <div class="col-md-6">
+                <label class="text-silver small mb-1">Specialty</label>
+                <input type="text" name="specialty"
+                       value="{{ artist.specialty }}"
+                       class="form-control"
+                       required>
+            </div>
+
+            <!-- BIO -->
+            <div class="col-12">
+                <label class="text-silver small mb-1">Bio</label>
+                <textarea name="bio"
+                          class="form-control"
+                          rows="3"
+                          required>{{ artist.bio }}</textarea>
+            </div>
+
+            <!-- CURRENT IMAGE -->
+            <div class="col-md-6">
+                <label class="text-silver small mb-1">Current Image</label><br>
+                {% if artist.image %}
+                    <img src="{{ artist.image.url }}" class="artist-preview">
+                {% else %}
+                    <p class="text-muted">No image uploaded</p>
+                {% endif %}
+            </div>
+
+            <!-- NEW IMAGE -->
+            <div class="col-md-6">
+                <label class="text-silver small mb-1">Upload New Image</label>
+                <input type="file" name="image" class="form-control">
+            </div>
+
+            <!-- BUTTON -->
+            <div class="col-12 mt-3">
+                <button class="btn btn-outline-warning px-4" style="border-radius:0;">
+                    Update Artist
+                </button>
+            </div>
+
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,191 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Manage Artists{% endblock %}
+
+{% block header_title %}ARTIST MANAGEMENT{% endblock %}
+
+{% block admin_content %}
+
+<style>
+    .table {
+        background: #111;
+        color: #fff !important;
+    }
+
+    .table thead th {
+        color: var(--accent-gold);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        border-bottom: 2px solid var(--accent-gold);
+    }
+
+    .table td {
+        color: #ffffff !important;
+        vertical-align: middle;
+    }
+
+    .artist-img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border: 1px solid var(--accent-gold);
+    }
+
+    .badge-custom {
+        background: #222;
+        color: #ddd;
+        border: 1px solid #444;
+        padding: 5px 10px;
+        font-size: 0.7rem;
+    }
+
+    .btn-outline-light:hover {
+        background: #fff;
+        color: #000;
+    }
+
+    .btn-outline-danger:hover {
+        background: #ff3131;
+        color: #fff;
+    }
+
+    .modal-content {
+        background: #111;
+        color: #fff;
+    }
+
+    .form-control {
+        background: #111;
+        border: 1px solid #333;
+        color: #fff;
+    }
+
+    .form-control:focus {
+        border-color: var(--accent-gold);
+        box-shadow: none;
+    }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="h5 text-gold letter-spacing" style="font-family: 'Cinzel';">
+        Studio Personnel
+    </h3>
+
+    <button class="btn btn-outline-warning btn-sm px-4"
+            style="border-radius:0;"
+            data-bs-toggle="modal"
+            data-bs-target="#addArtistModal">
+        + REGISTER NEW ARTIST
+    </button>
+</div>
+
+<div class="activity-panel shadow-lg p-3">
+    <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle">
+
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>AVATAR</th>
+                    <th>NAME</th>
+                    <th>SPECIALTY</th>
+                    <th class="text-end">OPERATIONS</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for artist in artists %}
+                <tr>
+
+                    <td class="fw-bold text-light">
+                        {{ forloop.counter }}
+                    </td>
+
+                    <td>
+                        {% if artist.image %}
+                            <img src="{{ artist.image.url }}" class="artist-img">
+                        {% else %}
+                            <span class="text-muted">No Image</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <strong class="text-white">{{ artist.name }}</strong>
+                    </td>
+
+                    <td>
+                        <span class="badge-custom">
+                            {{ artist.specialty }}
+                        </span>
+                    </td>
+
+                    <td class="text-end">
+
+                        <!-- EDIT -->
+                        <a href="{% url 'edit_artist' artist.id %}"
+                           class="btn btn-sm btn-outline-light me-2">
+                            EDIT
+                        </a>
+
+                        <!-- DELETE -->
+                        <a href="{% url 'delete_artist' artist.id %}"
+                           class="btn btn-sm btn-outline-danger"
+                           onclick="return confirm('Are you sure you want to delete this artist?')">
+                            DELETE
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">
+                        No artists found
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+<!-- 🔥 ADD ARTIST MODAL -->
+<div class="modal fade" id="addArtistModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title text-gold">Add Artist</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="modal-body">
+
+                    <input type="text" name="name" class="form-control mb-3" placeholder="Artist Name" required>
+
+                    <input type="text" name="specialty" class="form-control mb-3" placeholder="Specialty" required>
+
+                    <textarea name="bio" class="form-control mb-3" placeholder="Bio" required></textarea>
+
+                    <input type="file" name="image" class="form-control" required>
+
+                </div>
+
+                <div class="modal-footer border-secondary">
+                    <button type="submit" class="btn btn-outline-warning">
+                        Add Artist
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

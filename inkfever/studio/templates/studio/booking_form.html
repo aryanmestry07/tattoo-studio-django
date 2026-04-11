@@ -1,0 +1,191 @@
+{% extends "studio/base.html" %}
+
+{% block title %}Confirmation | Ink Fever{% endblock %}
+
+{% block content %}
+<style>
+    :root {
+        --gold: #bc9c22;
+        --dark-bg: #080808;
+        --card-bg: #0f0f0f;
+        --border-color: #1a1a1a;
+    }
+
+    /* Booking Container */
+    .booking-wrapper {
+        max-width: 900px;
+        margin: 80px auto;
+        animation: fadeIn 0.8s ease-in-out;
+    }
+
+    /* Professional Progress Stepper */
+    .step-indicator {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 50px;
+    }
+    .step {
+        text-align: center;
+        padding: 0 25px;
+        color: #555; /* Dimmed but readable */
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    .step.active { 
+        color: var(--gold); 
+        font-weight: bold; 
+    }
+    .step.active::after {
+        content: ""; display: block; width: 40px; height: 1px; 
+        background: var(--gold); margin: 8px auto;
+    }
+
+    /* Confirmation Card */
+    .confirm-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 0;
+        overflow: hidden;
+    }
+
+    .summary-side {
+        background: #050505;
+        border-right: 1px solid var(--border-color);
+        padding: 50px 40px;
+    }
+
+    .form-side {
+        padding: 50px 40px;
+    }
+
+    .detail-label {
+        font-family: 'Cinzel', serif;
+        color: var(--gold);
+        font-size: 0.65rem;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .detail-value {
+        font-size: 1.2rem;
+        margin-bottom: 25px;
+        color: #ffffff; /* Turned white */
+        font-weight: 300;
+    }
+
+    /* Custom Input Styling */
+    textarea.form-control {
+        background: transparent !important;
+        border: 1px solid var(--border-color) !important;
+        color: #fff !important;
+        border-radius: 0;
+        padding: 20px;
+        font-size: 0.9rem;
+        transition: border-color 0.3s ease;
+    }
+    textarea.form-control:focus {
+        border-color: var(--gold) !important;
+        box-shadow: none;
+    }
+    
+    /* Input Label Color */
+    .vision-label {
+        color: #ffffff !important; /* Turned white */
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.7rem;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    /* --- THE YELLOW (GOLD) BUTTON --- */
+    .btn-confirm {
+        background: var(--gold) !important;
+        color: #000 !important;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        border-radius: 0;
+        padding: 20px;
+        font-size: 0.8rem;
+        border: none;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    .btn-confirm:hover {
+        background: #ffffff !important;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(188, 156, 34, 0.3);
+    }
+
+    .note-box {
+        margin-top: 40px;
+        padding: 20px;
+        border: 1px solid #1a1a1a;
+        font-size: 0.75rem;
+        color: #ffffff; /* Turned white */
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="container booking-wrapper">
+    <div class="step-indicator">
+        <div class="step">01 Selection</div>
+        <div class="step">02 The Slot</div>
+        <div class="step active">03 Confirmation</div>
+    </div>
+
+    <div class="confirm-card shadow-2xl">
+        <div class="row g-0">
+            
+            <div class="col-md-5 summary-side">
+                <h3 class="brand h5 mb-5" style="color: #fff;">Appointment Summary</h3>
+                
+                <div class="detail-label">Master Artist</div>
+                <div class="detail-value">{{ slot.artist.name }}</div>
+
+                <div class="detail-label">Date</div>
+                <div class="detail-value">{{ slot.date|date:"F d, Y" }}</div>
+
+                <div class="detail-label">Time Window</div>
+                <div class="detail-value">{{ slot.start_time }} — {{ slot.end_time }}</div>
+
+                <div class="note-box">
+                    <span style="color: var(--gold); font-weight: bold; letter-spacing: 1px;">PROTOCOL:</span><br>
+                    Deposits are non-refundable and required to secure this professional engagement.
+                </div>
+            </div>
+
+            <div class="col-md-7 form-side">
+                <h3 class="brand h5 mb-5" style="color: #fff;">The Vision</h3>
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-5">
+                        <label class="vision-label">Describe your concept</label>
+                        {{ form.description }}
+                        <div class="mt-3 small" style="color: rgba(255,255,255,0.5); font-size: 0.7rem; letter-spacing: 1px;">
+                            Include desired size, body placement, and stylistic elements.
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-confirm w-100 mb-4">
+                        Secure Appointment
+                    </button>
+
+                    <a href="javascript:history.back()" class="d-block text-center small text-decoration-none" style="color: #fff; letter-spacing: 2px; opacity: 0.6;">
+                        ← RETURN TO SCHEDULE
+                    </a>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

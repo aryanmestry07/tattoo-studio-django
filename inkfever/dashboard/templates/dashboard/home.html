@@ -1,0 +1,85 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Dashboard | Ink Fever{% endblock %}
+
+{% block header_title %}CONSOLE OVERVIEW{% endblock %}
+
+{% block admin_content %}
+
+<div class="row g-4">
+
+    <!-- 👨‍🎨 Artists Count -->
+    <div class="col-md-4">
+        <div class="stat-card p-4 text-center">
+            <i class="bi bi-people text-gold fs-2 mb-3 d-block"></i>
+            <div class="small text-silver letter-spacing fw-800">ARTISTS</div>
+            <div class="display-6 fw-800 text-white mt-2">
+                {{ artists_count|default:"--" }}
+            </div>
+        </div>
+    </div>
+
+    <!-- 🎨 Tattoos Count -->
+    <div class="col-md-4">
+        <div class="stat-card p-4 text-center">
+            <i class="bi bi-image text-gold fs-2 mb-3 d-block"></i>
+            <div class="small text-silver letter-spacing fw-800">TATTOOS</div>
+            <div class="display-6 fw-800 text-white mt-2">
+                {{ tattoos_count|default:"--" }}
+            </div>
+        </div>
+    </div>
+
+    <!-- 📅 Bookings Count -->
+    <div class="col-md-4">
+        <div class="stat-card p-4 text-center">
+            <i class="bi bi-calendar-check text-gold fs-2 mb-3 d-block"></i>
+            <div class="small text-silver letter-spacing fw-800">BOOKINGS</div>
+            <div class="display-6 fw-800 text-white mt-2">
+                {{ bookings_count|default:"--" }}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- 🔥 OPTIONAL: RECENT BOOKINGS -->
+<div class="mt-5">
+    <h5 class="mb-3">Recent Bookings</h5>
+
+    <div class="table-responsive">
+        <table class="table table-dark table-hover">
+
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Artist</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for booking in recent_bookings %}
+                <tr>
+                    <td>{{ booking.user.username }}</td>
+                    <td>{{ booking.artist.name }}</td>
+                    <td>{{ booking.slot.date }}</td>
+                    <td>{{ booking.slot.start_time }} - {{ booking.slot.end_time }}</td>
+                    <td>
+                        <span class="badge bg-info">{{ booking.status }}</span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No bookings yet</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+{% endblock %}
