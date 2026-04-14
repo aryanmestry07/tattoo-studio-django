@@ -78,7 +78,7 @@ class Review(models.Model):
     rating = models.IntegerField()
     comment = models.TextField()
 
-    created_at = models.DateTimeField(auto_now_add=True)  # 🔥 bonus
+    created_at = models.DateTimeField(auto_now_add=True) 
 
     def __str__(self):
         return f"{self.user.username} - {self.artist.name}"
